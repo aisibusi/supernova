@@ -1,27 +1,15 @@
-
-/* Load products.json and render product cards */
-async function loadProducts(){
-  try{
-    const res = await fetch('products.json');
-    const products = await res.json();
-    const grid = document.getElementById('product-grid');
-    grid.innerHTML = '';
-    products.forEach(p=>{
+fetch('products.json')
+  .then(response => response.json())
+  .then(data => {
+    const gallery = document.getElementById('gallery');
+    data.products.forEach(product => {
       const card = document.createElement('div');
       card.className = 'card';
       card.innerHTML = `
-        <img src="${p.image}" alt="${p.name}">
-        <div class="card-body">
-          <h3>${p.name}</h3>
-          <p>${p.description}</p>
-          <div class="price">${p.price}</div>
-        </div>
+        <img src="${product.image}" alt="${product.name}" />
+        <h3>${product.name}</h3>
+        <p>${product.description}</p>
       `;
-      grid.appendChild(card);
+      gallery.appendChild(card);
     });
-  }catch(e){
-    console.error(e);
-    document.getElementById('product-grid').innerHTML = '<p>Failed to load products.json</p>';
-  }
-}
-document.addEventListener('DOMContentLoaded', loadProducts);
+  });
